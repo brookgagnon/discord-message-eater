@@ -65,12 +65,9 @@ class MessageEater
     $body = substr($response, $header_size);
     
     $rate_limit_matches = [];
-    if(strpos($header, 'X-RateLimit-Remaining: 0') && preg_match('/X-RateLimit-Reset: (\d+)/',$header, $rate_limit_matches))
+    if(strpos($header, 'X-RateLimit-Remaining: 0')!==FALSE && preg_match('/X-RateLimit-Reset: (\d+)/',$header, $rate_limit_matches))
     {
-      if(!empty($rate_limit_matches[1]) && preg_match('/^\d+$/',$rate_limit_matches[1]))
-      {
-        $this->globalRateLimit = (int) $rate_limit_matches[1];
-      }
+      $this->globalRateLimit = (int) $rate_limit_matches[1];
     }
     
     return json_decode($body);
