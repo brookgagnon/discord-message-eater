@@ -11,6 +11,7 @@ class MessageEater
   private $channelNames;
   private $rateLimits;
   private $maxChannelNameLength;
+  private $deleteCallback;
 
   public function __construct($config)
   {
@@ -18,6 +19,9 @@ class MessageEater
     $this->botToken = $config['bot_token'];
     $this->channelIds = $config['channel_ids'];
 
+    if(isset($config['delete_callback']) && is_callable($config['delete_callback'])) $this->deleteCallback = $config['delete_callback'];
+    else $this->deleteCallback = FALSE;
+    
     // get our channel names. if we can't get a name, we probably can't do anything else, so remove the channel from the list.
     $this->channelNames = [];
     $this->maxChannelNameLength = 0;
@@ -71,6 +75,7 @@ class MessageEater
             $this->log($channel_id, substr($message->timestamp,0,10).' | '.$message->author->username.' | '.$message->content);
             $after[$channel_id] = $message->id;
             $this->deleteMessage($message->channel_id, $message->id);
+            if($this->deleteCallback) call_user_func($this->deleteCallback, $message);
 
             // if we have a rate limit, skip to next channel but keep ID in array so we come back to it.
             if(time()<$this->rateLimits[$channel_id])
@@ -143,13 +148,13 @@ class MessageEater
     return json_decode($body);
   }
 
-  public function getChannel($channel_id)
+  private function getChannel($channel_id)
   {
     $channel = $this->curl('https://discordapp.com/api/v6/channels/'.$channel_id, $channel_id);
     return $channel;
   }
 
-  public function getMessages($channel_id, $after)
+  private function getMessages($channel_id, $after)
   {
     $messages = $this->curl('https://discordapp.com/api/v6/channels/'.$channel_id.'/messages?limit=1&after='.$after, $channel_id);
     if(!isset($messages[0]->id)) return false;
@@ -158,7 +163,7 @@ class MessageEater
     return array_reverse($messages);
   }
 
-  public function deleteMessage($channel_id, $message_id)
+  private function deleteMessage($channel_id, $message_id)
   {
     $this->curl('https://discordapp.com/api/v6/channels/'.$channel_id.'/messages/'.$message_id, $channel_id, 'DELETE');
   }
