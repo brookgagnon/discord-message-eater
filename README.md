@@ -9,7 +9,6 @@
 
 ## Things To Improve
 - add error and unexpected response handling
-- discord rate limits are per-channel for delete. tracking these separately would allow deleting messages faster.
 - what else could go horribly wrong?
 
 ## License & Copyright
