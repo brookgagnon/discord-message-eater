@@ -1,26 +1,6 @@
 <?php
 
-/*
-  TO USE:
-  1. Set config items.
-  2. Test on test server.
-  3. Run with cron, etc. as needed.
-
-  TO IMPROVE:
-  - add error and unexpected response handling
-  - discord rate limits are per-channel for delete. tracking these separately would allow deleting messages faster.
-  - what else could go horribly wrong?
-*/
-
-$config = [
-  'delete_older_than' => strtotime('-3 months'),
-  'bot_token' => 'token-goes-here',
-  'channel_ids' => [
-    000000000000000000,
-    000000000000000001,
-    000000000000000002
-  ]
-];
+require('config.php');
 
 class MessageEater
 {
