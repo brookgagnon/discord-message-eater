@@ -14,4 +14,4 @@
 ## License & Copyright
 * MIT License
 * Copyright (c) 2018 Brook Gagnon
-* See LICENSE file.
+* See LICENSE file
