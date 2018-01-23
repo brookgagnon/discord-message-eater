@@ -156,7 +156,7 @@ class MessageEater
 
   private function getMessages($channel_id, $after)
   {
-    $messages = $this->curl('https://discordapp.com/api/v6/channels/'.$channel_id.'/messages?limit=1&after='.$after, $channel_id);
+    $messages = $this->curl('https://discordapp.com/api/v6/channels/'.$channel_id.'/messages?limit=100&after='.$after, $channel_id);
     if(!isset($messages[0]->id)) return false;
     
     // reverse array to return messages in order, from oldest to newest.
