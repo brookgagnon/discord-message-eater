@@ -1,6 +1,7 @@
 <?php
 
 require('config.php');
+require('ntp_check.php');
 
 class MessageEater
 {
