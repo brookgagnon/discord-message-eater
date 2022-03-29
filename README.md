@@ -1,5 +1,6 @@
 # discord-message-eater
 * PHP Discord bot script to delete messages older than a certain age.
+* No longer maintained, may or may not work.
 
 ## How To Use
 1. Copy config.sample.php to config.php.
